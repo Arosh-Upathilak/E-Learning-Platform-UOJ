@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 const subjectSchema = new mongoose.Schema({
-  subjectTitle: {
+  subjectCode: {
     type: String,
     required: true,
   },
-  subjectCode: {
+  subjectTitle: {
     type: String,
     required: true,
   },

@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import connectDB from './config/connectDB.js';
 import userRouter from './routes/userRoutes.js';
+import subjectRouter from './routes/subjectRoutes.js';
 
 
 const app = express();
@@ -31,9 +32,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/users', userRouter);
-
-
-
+app.use('/api/subjects', subjectRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
