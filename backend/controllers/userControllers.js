@@ -6,8 +6,8 @@ import sendMail from "../utils/nodeMailer.js";
 //user register
 const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-    if (!username || !email || !password) {
+    const { username, email, password ,department, semester } = req.body;
+    if (!username || !email || !password || !department || !semester) {
       return res.status(400).json({ message: "All fields are required" });
     }
     const userExists = await userModel.findOne({ email });
@@ -21,11 +21,26 @@ const register = async (req, res) => {
       username,
       email,
       password: hashPassword,
+      department,
+      semester
     });
     await newUser.save();
+
+    const token = jwt.sign(
+      { userId: newUser._id, userEmail: newUser.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
     return res
       .status(201)
-      .json({ message: "User registered successfully", user: newUser });
+      .json({ message: "User registered successfully", user: newUser,token });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -62,7 +77,7 @@ const login = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "User logged in successfully", token });
+      .json({ message: "User logged in successfully", token, userExists });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -166,7 +181,7 @@ const sendotp = async (req, res) => {
     userExists.otp = otp.toString();
     userExists.otpExpiration = Date.now() + 600000;
     await userExists.save();
-    return res.status(200).json({ message: "OTP sent successfully", otp });
+    return res.status(200).json({ message: "OTP sent successfully", otp, id: userExists._id });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
