@@ -10,6 +10,7 @@ export const AppContextProvider = ({ children }) => {
   const [theme, setTheme] = useState("light");
   const url = process.env.REACT_APP_API_URL;
   const [refreshToggle, setRefreshToggle] = useState(false);
+  const [refreshToggleFile, setRefreshToggleFile] = useState(false);
 
   const department = [
     "Computer Engineering",
@@ -108,7 +109,9 @@ export const AppContextProvider = ({ children }) => {
     userData,
     fileType,
     refreshToggle, 
-    setRefreshToggle
+    setRefreshToggle,
+    refreshToggleFile, 
+    setRefreshToggleFile
   };
 
   return (

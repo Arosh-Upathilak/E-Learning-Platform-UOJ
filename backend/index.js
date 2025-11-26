@@ -6,7 +6,7 @@ dotenv.config();
 import connectDB from './config/connectDB.js';
 import userRouter from './routes/userRoutes.js';
 import subjectRouter from './routes/subjectRoutes.js';
-
+import fileRouter from './routes/fileRoutes.js';
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -33,6 +33,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/users', userRouter);
 app.use('/api/subjects', subjectRouter);
+app.use('/api/files', fileRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
