@@ -49,6 +49,23 @@ module.exports = {
 
           "navbar-light" : "#ffffff",
           "navbar-dark" : "#101828",
+
+          "total-subject" : "#574cfc",
+          "total-file" : "#00a9cd",
+          "lecture-note" : "#a333ff",
+          "pass-paper" : "#ef1d8a",
+
+          "quick-action-light" : "#ffffff",
+          "quick-action-dark" : "#101828",
+      },
+       keyframes: {
+        fadeIn: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.5s ease-in-out',
       },
     },
   },

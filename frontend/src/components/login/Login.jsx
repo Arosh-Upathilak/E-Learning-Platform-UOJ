@@ -55,10 +55,9 @@ function Login() {
       setError("");
 
       const user = response.data?.userExists;
-      console.log(user)
-      console.log(user.IsAdmin)
 
       if (user?.IsAdmin) {
+
         navigate("/admin/home");
       } else {
         navigate("/home");

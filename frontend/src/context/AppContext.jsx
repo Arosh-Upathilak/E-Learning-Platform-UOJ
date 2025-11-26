@@ -9,6 +9,7 @@ export const AppContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const [theme, setTheme] = useState("light");
   const url = process.env.REACT_APP_API_URL;
+  const [refreshToggle, setRefreshToggle] = useState(false);
 
   const department = [
     "Computer Engineering",
@@ -29,6 +30,7 @@ export const AppContextProvider = ({ children }) => {
     "Semester 8",
   ];
 
+  const fileType = ["Lecture note", "Pass Paper"]
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
@@ -92,6 +94,9 @@ export const AppContextProvider = ({ children }) => {
     }
   }, [url]);
 
+
+  
+
   const value = {
     theme,
     toggleTheme,
@@ -101,6 +106,9 @@ export const AppContextProvider = ({ children }) => {
     handleLogout,
     fetchData,
     userData,
+    fileType,
+    refreshToggle, 
+    setRefreshToggle
   };
 
   return (
