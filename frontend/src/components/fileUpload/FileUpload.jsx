@@ -13,18 +13,21 @@ function FileUpload({ setOpenUploadBox }) {
     fileUniqueName: "",
     fileTitle: "",
     fileName: "",
-    fileType: "",      
+    fileType: "",
     filePath: "",
     fileUrl: "",
     fileSize: "",
     fileSizeBytes: 0,
     description: "",
     instructorName: "",
+    department: "",
+    semester: "",
     subject: "",
   });
 
   const [error, setError] = useState("");
-  const [combinedArray, setCombinedArray] = useState([]);
+  const [combinedArray, setCombinedArray] = useState([]); 
+  const [subjectsList, setSubjectsList] = useState([]); 
   const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -34,6 +37,7 @@ function FileUpload({ setOpenUploadBox }) {
         if (!url) return;
         const response = await axios.get(`${url}/subjects/listSubjects`, { withCredentials: true });
         const subjects = response.data.subjects || [];
+        setSubjectsList(subjects);
         const combined = subjects.map((sub) => `${sub.subjectCode} - ${sub.subjectTitle}`);
         setCombinedArray(combined);
       } catch (err) {
@@ -45,6 +49,33 @@ function FileUpload({ setOpenUploadBox }) {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "subject") {
+      const selectedCombined = value;
+      const matched = subjectsList.find(
+        (s) => `${s.subjectCode} - ${s.subjectTitle}` === selectedCombined
+      );
+
+      if (matched) {
+        setFileData((prev) => ({
+          ...prev,
+          subject: selectedCombined,
+          department: matched.department || "",
+          semester: matched.semester || "",
+        }));
+      } else {
+        setFileData((prev) => ({
+          ...prev,
+          subject: selectedCombined,
+          department: "",
+          semester: "",
+        }));
+      }
+
+      setError("");
+      return;
+    }
+
     setFileData((prev) => ({ ...prev, [name]: value }));
     setError("");
   };
@@ -54,7 +85,7 @@ function FileUpload({ setOpenUploadBox }) {
     const f = e.target.files?.[0];
     if (!f) return;
 
-    const maxBytes = 50 * 1024 * 1024; 
+    const maxBytes = 50 * 1024 * 1024;
     const allowed = [".pdf", ".doc", ".docx", ".ppt", ".pptx"];
     const ext = f.name.slice(((f.name.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
 
@@ -96,6 +127,8 @@ function FileUpload({ setOpenUploadBox }) {
       "fileSize",
       "subject",
       "instructorName",
+      "department",
+      "semester",
     ];
     const missing = required.filter((k) => {
       const v = payload[k];
@@ -155,6 +188,16 @@ function FileUpload({ setOpenUploadBox }) {
       const readableSize = humanFileSize(selectedFile.size);
       const sizeBytes = selectedFile.size;
 
+      let department = fileData.department;
+      let semester = fileData.semester;
+      if ((!department || !semester) && fileData.subject) {
+        const matched = subjectsList.find((s) => `${s.subjectCode} - ${s.subjectTitle}` === fileData.subject);
+        if (matched) {
+          department = matched.department || "";
+          semester = matched.semester || "";
+        }
+      }
+
       const payload = {
         fileUniqueName,
         fileName: selectedFile.name,
@@ -167,6 +210,8 @@ function FileUpload({ setOpenUploadBox }) {
         subject: (fileData.subject || "").trim(),
         instructorName: (fileData.instructorName || "").trim(),
         description: (fileData.description || "").trim(),
+        department: department || "",
+        semester: semester || "",
       };
 
       const missing = validatePayload(payload);
@@ -202,9 +247,10 @@ function FileUpload({ setOpenUploadBox }) {
         fileType: payload.fileType,
         filePath: uploadData.path,
         fileUniqueName,
+        department: payload.department,
+        semester: payload.semester,
       }));
 
-      toast.success("File uploaded successfully");
       setSelectedFile(null);
       const input = document.getElementById("uploadFile");
       if (input) input.value = "";
@@ -228,6 +274,16 @@ function FileUpload({ setOpenUploadBox }) {
     }
 
     if (fileData.fileUrl && !selectedFile) {
+      let department = fileData.department;
+      let semester = fileData.semester;
+      if ((!department || !semester) && fileData.subject) {
+        const matched = subjectsList.find((s) => `${s.subjectCode} - ${s.subjectTitle}` === fileData.subject);
+        if (matched) {
+          department = matched.department || "";
+          semester = matched.semester || "";
+        }
+      }
+
       const payload = {
         fileUniqueName: fileData.fileUniqueName || `${Date.now()}`,
         fileName: fileData.fileName,
@@ -240,6 +296,8 @@ function FileUpload({ setOpenUploadBox }) {
         subject: fileData.subject,
         instructorName: fileData.instructorName,
         description: fileData.description,
+        department: department || "",
+        semester: semester || "",
       };
 
       const missing = validatePayload(payload);
@@ -339,17 +397,8 @@ function FileUpload({ setOpenUploadBox }) {
             <div className="flex flex-col flex-1 gap-2">
               <label className="text-sm sm:text-base text-gray-700 dark:text-gray-300 font-semibold">File type *</label>
               <select required name="fileType" id="fileType" value={fileData.fileType} onChange={handleInputChange} aria-label="Select file type" disabled={!Array.isArray(fileTypeOptions) || fileTypeOptions.length === 0} className={`w-full bg-input-light dark:bg-[#111B2A] text-black dark:text-white p-2 rounded-lg border dark:border-white/60 border-black/60 cursor-pointer ${(!Array.isArray(fileTypeOptions) || fileTypeOptions.length === 0) ? "opacity-60 cursor-not-allowed" : ""}`}>
-                {/* Placeholder option — keeps the select showing "Select File type" until user chooses */}
-                <option value="" disabled>
-                  Select File type
-                </option>
-
-                {/* Render options from context (if any) */}
-                {Array.isArray(fileTypeOptions) && fileTypeOptions.map((ft) => (
-                  <option key={ft} value={ft}>
-                    {ft}
-                  </option>
-                ))}
+                <option value="" disabled>Select File type</option>
+                {Array.isArray(fileTypeOptions) && fileTypeOptions.map((ft) => (<option key={ft} value={ft}>{ft}</option>))}
               </select>
             </div>
 

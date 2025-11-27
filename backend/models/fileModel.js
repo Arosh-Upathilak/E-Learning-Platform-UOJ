@@ -41,6 +41,16 @@ const fileSchema = new mongoose.Schema({
         required: true,
         default: "",
     },
+    department:{
+        type: String,
+        required: true,
+        default: "",
+    },
+    semester:{
+        type: String,
+        required: true,
+        default: "",
+    },
     user:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

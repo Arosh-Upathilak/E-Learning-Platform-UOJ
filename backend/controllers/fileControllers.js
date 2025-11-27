@@ -3,8 +3,8 @@ import fileModel from "../models/fileModel.js";
 //create a file
 const createFile = async (req, res) => {
   try {
-    const { fileUniqueName, fileName, fileTitle,  fileType, fileUrl, filePath, fileSize,description,instructorName, subject } = req.body;
-    if (  !fileName || !fileTitle || !fileType || !fileUrl || !fileSize || !subject) {
+    const { fileUniqueName, fileName, fileTitle,  fileType, fileUrl, filePath, fileSize,description,instructorName,department,semester,subject } = req.body;
+    if ( !fileUniqueName|| !fileName || !fileTitle || !fileType || !fileUrl || !fileSize || !instructorName|| !department || !semester|| !subject) {
       return res.status(400).json({ message: "All the fields are required" });
     }
     const fileExists = await fileModel.findOne({ fileUniqueName });
@@ -21,6 +21,8 @@ const createFile = async (req, res) => {
       fileSize,
       description,
       instructorName,
+      department,
+      semester,
       subject,
       user: req.user.userId,
     });

@@ -17,10 +17,3 @@ export function shortName(name, limit = 40) {
   return name.length > limit ? name.slice(0, limit - 3) + "..." : name;
 }
 
-export function sanitizeForFilename(str = "") {
-  return str
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9\-_.]/g, ""); 
-}
