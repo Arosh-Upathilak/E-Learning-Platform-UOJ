@@ -48,10 +48,20 @@ const deleteFile = async (req, res) => {
 };
 
 //find file using user id
-const findFileByUserId = async (req, res) => {
+const findFilebyUserId = async (req, res) => {
+  try {
+    const files = await fileModel.find({user: req.user.userId});
+    return res.status(200).json({ message: "File fetched successfully", files });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// find file using file id
+const findFilebyFileId = async (req, res) => {
   try {
     const { id } = req.params;
-    const file = await fileModel.find({ user: id });
+    const file = await fileModel.findById(id);
     if (!file) {
       return res.status(400).json({ message: "File does not exist" });
     }
@@ -74,4 +84,4 @@ const findAllFiles = async (req, res) => {
   }
 };
 
-export {createFile, deleteFile, findFileByUserId, findAllFiles}
+export {createFile, deleteFile, findFilebyUserId,findFilebyFileId, findAllFiles}

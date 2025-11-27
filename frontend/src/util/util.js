@@ -17,3 +17,7 @@ export function shortName(name, limit = 40) {
   return name.length > limit ? name.slice(0, limit - 3) + "..." : name;
 }
 
+export  const extractNumber = (str) => {
+    const match = str.match(/\d+/);
+    return match ? Number(match[0]) : 0;
+  };

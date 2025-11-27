@@ -7,7 +7,7 @@ import { humanFileSize, shortName } from "../../util/util";
 import { toast } from "sonner";
 
 function FileUpload({ setOpenUploadBox }) {
-  const { fileType: fileTypeOptions, url, refreshToggleFile } = useContext(AppContext);
+  const { fileType: fileTypeOptions, url, refreshToggleFile, setRefreshToggleFile } = useContext(AppContext);
 
   const [fileData, setFileData] = useState({
     fileUniqueName: "",
@@ -229,6 +229,7 @@ function FileUpload({ setOpenUploadBox }) {
           const message = response.data?.message || "File metadata saved";
           toast.success(message);
           setError("");
+          setRefreshToggleFile((prev)=>setRefreshToggleFile(!prev))
         } catch (err) {
           const message = err.response?.data?.message || err.message || "Failed to save file metadata.";
           toast.error(message);

@@ -9,7 +9,7 @@ function DeleteSubject({ id, setDeleteBoxOpen }) {
   const [loading, setLoading] = useState(false);
   const [subjectTitle, setSubjectTitle] = useState("");
 
-  // load subject title to show in confirmation
+
   useEffect(() => {
     if (!id || !url) {
       setSubjectTitle("");
@@ -48,7 +48,6 @@ function DeleteSubject({ id, setDeleteBoxOpen }) {
         withCredentials: true,
       });
 
-      // consider any 2xx as success
       if (response.status >= 200 && response.status < 300) {
         toast.success(response.data?.message || "Subject deleted successfully");
         setDeleteBoxOpen(false);
