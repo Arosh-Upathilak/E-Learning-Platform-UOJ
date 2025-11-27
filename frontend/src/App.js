@@ -13,12 +13,12 @@ import AdminHome from './pages/admin/home/AdminHome';
 import PrivateRouter from './components/privateRouter/PrivateRouter';
 import ManageSubject from './pages/admin/manageSubject/ManageSubject';
 import UploadFile from './pages/admin/uploadFile/UploadFile';
+import SubjectDetails from './pages/student/subjectDetails/SubjectDetails';
 
 export default function App() {
   return (
   
-      <div className="min-h-screen flex flex-col">
-        <div className="flex-1">
+      <>
           <Toaster  closeButton position="top-right" richColors/>
           <Routes>
             <Route path="/" element={<Login />} />
@@ -27,7 +27,7 @@ export default function App() {
             <Route path="/verify-otp/:id" element={<VerifyOtp/>} />
             <Route path="/forgot-password/:id" element={<ForgotPassword/>} />
             <Route path="/home" element={<PrivateRouter element={<StudentHome/>} />}/>
-
+            <Route path="/home/subject/:id" element={<PrivateRouter element={<SubjectDetails/>} />}/>
 
             {/*Adin*/}
             <Route path='/admin/home' element={<PrivateRouter element={<AdminHome/>} adminOnly/>}/>
@@ -35,8 +35,7 @@ export default function App() {
             <Route path= '/admin/upload' element={<PrivateRouter element={<UploadFile/>} adminOnly/>}/>
 
           </Routes>
-        </div>
         <Footer/>
-      </div>
+      </>
   )
 }
