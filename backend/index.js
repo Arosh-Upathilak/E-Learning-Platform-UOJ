@@ -13,8 +13,19 @@ const port = process.env.PORT || 5000;
 const frontend_url = process.env.FRONTEND_URL ;
 
 //middleware
+/*
 app.use(cors({
     origin:frontend_url,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}));*/
+
+//for the deployement
+app.use(cors({
+    origin: (origin, callback) => {
+        callback(null, true);
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
