@@ -84,7 +84,7 @@ const getSubject = async (req, res) =>{
 //list a subjects
 const listSubjects = async (req, res) =>{
     try{
-        const subjects = await subjectModel.find({user: req.user._id});
+        const subjects = await subjectModel.find({user: req.user.userId});
         return res.status(200).json({ message: "Subjects fetched successfully", subjects });
     }catch(error){
         return res.status(500).json({ message: error.message });

@@ -11,6 +11,8 @@ import ForgotPassword from './components/forgotpassword/ForgotPassword';
 import StudentHome from './pages/student/home/StudentHome'
 import AdminHome from './pages/admin/home/AdminHome';
 import PrivateRouter from './components/privateRouter/PrivateRouter';
+import ManageSubject from './pages/admin/manageSubject/ManageSubject';
+import UploadFile from './pages/admin/uploadFile/UploadFile';
 
 export default function App() {
   return (
@@ -27,8 +29,11 @@ export default function App() {
             <Route path="/home" element={<PrivateRouter element={<StudentHome/>} />}/>
 
 
-            {/*Amdin*/}
+            {/*Adin*/}
             <Route path='/admin/home' element={<PrivateRouter element={<AdminHome/>} adminOnly/>}/>
+            <Route path= '/admin/subjects' element={<PrivateRouter element={<ManageSubject/>} adminOnly/>}/>
+            <Route path= '/admin/upload' element={<PrivateRouter element={<UploadFile/>} adminOnly/>}/>
+
           </Routes>
         </div>
         <Footer/>
