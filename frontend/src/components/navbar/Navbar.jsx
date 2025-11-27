@@ -25,10 +25,13 @@ function Navbar() {
             </h3>
           </div>
           :
-          <h1 className="text-xl font-bold text-gray-900 dark:text-white text-center sm:text-left">
+          
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white text-center sm:text-left">
             E-Learning Platform UOJ
+            <br />
+            <p className="text-gray-500 dark:text-white/50 text-lg">Welcome back, <span className="text-gray-900 dark:text-white">{userData.username}</span></p>
           </h1>
-
+          
         }
 
         {/* Logout button */}

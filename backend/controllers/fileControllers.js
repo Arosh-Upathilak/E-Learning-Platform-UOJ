@@ -3,8 +3,8 @@ import fileModel from "../models/fileModel.js";
 //create a file
 const createFile = async (req, res) => {
   try {
-    const { fileUniqueName, fileName, fileTitle,  fileType, fileUrl, filePath, fileSize,description,instructorName,department,semester,subject } = req.body;
-    if ( !fileUniqueName|| !fileName || !fileTitle || !fileType || !fileUrl || !fileSize || !instructorName|| !department || !semester|| !subject) {
+    const { fileUniqueName, fileName, fileTitle,  fileType, fileUrl, filePath, fileSize,description,instructorName,department,semester,subjectId,subject } = req.body;
+    if ( !fileUniqueName|| !fileName || !fileTitle || !fileType || !fileUrl || !fileSize || !instructorName|| !department || !semester|| !subjectId|| !subject) {
       return res.status(400).json({ message: "All the fields are required" });
     }
     const fileExists = await fileModel.findOne({ fileUniqueName });
@@ -24,6 +24,7 @@ const createFile = async (req, res) => {
       department,
       semester,
       subject,
+      subjectId,
       user: req.user.userId,
     });
     await newfile.save();
@@ -71,6 +72,20 @@ const findFilebyFileId = async (req, res) => {
   }
 };
 
+//find the files using subject id
+const findFilebySubjectId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const files = await fileModel.find({subjectId: id});
+    if (!files) {
+      return res.status(400).json({ message: "Files does not exist" });
+    }
+    return res.status(200).json({ message: "Files fetched successfully", files });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 //find all files
 const findAllFiles = async (req, res) => {
   try {
@@ -84,4 +99,4 @@ const findAllFiles = async (req, res) => {
   }
 };
 
-export {createFile, deleteFile, findFilebyUserId,findFilebyFileId, findAllFiles}
+export {createFile, deleteFile, findFilebyUserId,findFilebyFileId,findFilebySubjectId, findAllFiles}

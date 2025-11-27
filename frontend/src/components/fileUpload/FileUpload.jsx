@@ -22,6 +22,7 @@ function FileUpload({ setOpenUploadBox }) {
     instructorName: "",
     department: "",
     semester: "",
+    subjectId: "",
     subject: "",
   });
 
@@ -57,11 +58,14 @@ function FileUpload({ setOpenUploadBox }) {
       );
 
       if (matched) {
+        // set subject, department, semester AND subjectId (support _id or id)
+        const sid = matched._id ?? matched.id ?? "";
         setFileData((prev) => ({
           ...prev,
           subject: selectedCombined,
           department: matched.department || "",
           semester: matched.semester || "",
+          subjectId: sid,
         }));
       } else {
         setFileData((prev) => ({
@@ -69,6 +73,7 @@ function FileUpload({ setOpenUploadBox }) {
           subject: selectedCombined,
           department: "",
           semester: "",
+          subjectId: "",
         }));
       }
 
@@ -128,6 +133,7 @@ function FileUpload({ setOpenUploadBox }) {
       "subject",
       "instructorName",
       "department",
+      "subjectId",
       "semester",
     ];
     const missing = required.filter((k) => {
@@ -173,12 +179,12 @@ function FileUpload({ setOpenUploadBox }) {
         .from(bucket)
         .getPublicUrl(uploadData.path);
 
-      console.log("uploadData:", uploadData);
-      console.log("getPublicUrl result:", publicData, publicErr);
-
       let publicUrl = "";
       if (publicData) {
         publicUrl = publicData.publicUrl || publicData.publicURL || "";
+      }
+      if(publicErr){
+        console.log("Public URL error:", publicErr)
       }
 
       if (!publicUrl) {
@@ -188,13 +194,16 @@ function FileUpload({ setOpenUploadBox }) {
       const readableSize = humanFileSize(selectedFile.size);
       const sizeBytes = selectedFile.size;
 
+      // ensure department, semester, subjectId are set (try to infer from selected subject)
       let department = fileData.department;
       let semester = fileData.semester;
-      if ((!department || !semester) && fileData.subject) {
+      let subjectId = fileData.subjectId;
+      if ((!department || !semester || !subjectId) && fileData.subject) {
         const matched = subjectsList.find((s) => `${s.subjectCode} - ${s.subjectTitle}` === fileData.subject);
         if (matched) {
           department = matched.department || "";
           semester = matched.semester || "";
+          subjectId = matched._id || "";
         }
       }
 
@@ -212,6 +221,7 @@ function FileUpload({ setOpenUploadBox }) {
         description: (fileData.description || "").trim(),
         department: department || "",
         semester: semester || "",
+        subjectId: (subjectId || "").toString().trim(),
       };
 
       const missing = validatePayload(payload);
@@ -229,7 +239,10 @@ function FileUpload({ setOpenUploadBox }) {
           const message = response.data?.message || "File metadata saved";
           toast.success(message);
           setError("");
-          setRefreshToggleFile((prev)=>setRefreshToggleFile(!prev))
+          // toggle refresh
+          if (typeof setRefreshToggleFile === "function") {
+            setRefreshToggleFile((prev) => !prev);
+          }
         } catch (err) {
           const message = err.response?.data?.message || err.message || "Failed to save file metadata.";
           toast.error(message);
@@ -250,6 +263,7 @@ function FileUpload({ setOpenUploadBox }) {
         fileUniqueName,
         department: payload.department,
         semester: payload.semester,
+        subjectId: payload.subjectId,
       }));
 
       setSelectedFile(null);
@@ -275,13 +289,16 @@ function FileUpload({ setOpenUploadBox }) {
     }
 
     if (fileData.fileUrl && !selectedFile) {
+      // Ensure subjectId/department/semester are present
       let department = fileData.department;
       let semester = fileData.semester;
-      if ((!department || !semester) && fileData.subject) {
+      let subjectId = fileData.subjectId;
+      if ((!department || !semester || !subjectId) && fileData.subject) {
         const matched = subjectsList.find((s) => `${s.subjectCode} - ${s.subjectTitle}` === fileData.subject);
         if (matched) {
           department = matched.department || "";
           semester = matched.semester || "";
+          subjectId = matched._id ?? matched.id ?? subjectId ?? "";
         }
       }
 
@@ -299,6 +316,7 @@ function FileUpload({ setOpenUploadBox }) {
         description: fileData.description,
         department: department || "",
         semester: semester || "",
+        subjectId: (subjectId || "").toString().trim(),
       };
 
       const missing = validatePayload(payload);
