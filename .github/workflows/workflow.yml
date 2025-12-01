@@ -1,0 +1,38 @@
+name: ELP-UOJ
+
+on:
+  push:
+    branches: [main]
+
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create backend .env
+        run: |
+          touch backend/.env
+          echo "MONGO_URL=${{ secrets.MONGO_URL }}" >> ./backend/.env
+          echo "PORT=${{ secrets.PORT }}" >> ./backend/.env
+          echo "EMAIL_USER=${{ secrets.EMAIL_USER }}" >> ./backend/.env
+          echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> ./backend/.env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> ./backend/.env
+
+      - name: Create frontend .env
+        run: |
+          touch ./frontend/.env
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" >> ./frontend/.env
+          echo "REACT_APP_SUPABASE_URL=${{ secrets.REACT_APP_SUPABASE_URL }}" >> ./frontend/.env
+          echo "REACT_APP_SUPABASE_ANON_KEY=${{ secrets.REACT_APP_SUPABASE_ANON_KEY }}" >> ./frontend/.env
+
+
+      - name: Stop existing Docker Compose (if running)
+        run: |
+          docker compose down || true
+      
+      - name: Run Docker Compose
+        run: |
+          docker compose up -d --build
