@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
 
+
 jobs:
   build:
     runs-on: self-hosted
@@ -19,6 +20,14 @@ jobs:
           echo "EMAIL_USER=${{ secrets.EMAIL_USER }}" >> ./backend/.env
           echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> ./backend/.env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> ./backend/.env
+
+      - name: Create frontend .env
+        run: |
+          touch ./frontend/.env
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" >> ./frontend/.env
+          echo "REACT_APP_SUPABASE_URL=${{ secrets.REACT_APP_SUPABASE_URL }}" >> ./frontend/.env
+          echo "REACT_APP_SUPABASE_ANON_KEY=${{ secrets.REACT_APP_SUPABASE_ANON_KEY }}" >> ./frontend/.env
+
 
       - name: Stop existing Docker Compose (if running)
         run: |
