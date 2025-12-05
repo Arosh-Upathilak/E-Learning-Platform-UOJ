@@ -130,7 +130,7 @@ function VerifyOtp() {
       <div className="flex flex-col items-center bg-form-light dark:bg-form-dark rounded-2xl p-5 sm:p-6 w-full max-w-md sm:max-w-lg">
         {/* Back button */}
         <Link
-          to={userId ? `/send-otp/${userId}` : "/send-otp"}
+          to='/send-otp'
           className="w-full self-start text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white transition-all duration-200 flex items-center gap-1 mb-4"
         >
           <ArrowLeft className="size-5" /> Back
