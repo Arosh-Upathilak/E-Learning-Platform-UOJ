@@ -10,7 +10,7 @@ import fileRouter from './routes/fileRoutes.js';
 
 const app = express();
 const port = process.env.PORT || 5000;
-const frontend_url = process.env.FRONTEND_URL ;
+const frontend_url = process.env.FRONTEND_URL_DEVELOPMENT_URL ;
 
 //middleware
 /*
@@ -25,7 +25,7 @@ app.use(cors({
 app.use(
   cors({
     origin: [
-      "https://e-learning-platform-uoj.netlify.app",
+      frontend_url,
       "http://localhost:3000", // for local dev
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],

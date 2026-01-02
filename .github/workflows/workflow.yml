@@ -20,6 +20,7 @@ jobs:
           echo "EMAIL_USER=${{ secrets.EMAIL_USER }}" >> .env
           echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> .env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "FRONTEND_URL_DEVELOPMENT_URL=${{ secrets.FRONTEND_URL_DEVELOPMENT_URL }}" >> .env
 
       - name: Install backend dependencies
         run: |
