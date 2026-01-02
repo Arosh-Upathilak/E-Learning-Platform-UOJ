@@ -29,7 +29,7 @@ jobs:
       - name: Start backend with PM2
         run: |
           pm2 delete backend || true
-          pm2 start index.js --name backend
+          pm2 start backend/index.js --name backend
           pm2 save
 
       # 🔥 Stop old ngrok (if running)
