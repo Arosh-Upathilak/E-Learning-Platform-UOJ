@@ -46,6 +46,6 @@ app.use('/api/users', userRouter);
 app.use('/api/subjects', subjectRouter);
 app.use('/api/files', fileRouter);
 
-app.listen(port, () => {
+app.listen(port,  "0.0.0.0",() => {
     console.log(`Server is running on port ${port}`);
 });
