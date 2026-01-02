@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import "./index.css";
 import { Route, Routes } from 'react-router-dom';
 import { Toaster } from 'sonner'
@@ -14,12 +14,8 @@ import PrivateRouter from './components/privateRouter/PrivateRouter';
 import ManageSubject from './pages/admin/manageSubject/ManageSubject';
 import UploadFile from './pages/admin/uploadFile/UploadFile';
 import SubjectDetails from './pages/student/subjectDetails/SubjectDetails';
-import Test from './pages/admin/Test';
 
 export default function App() {
-  useEffect(()=>{
-    console.log(process.env.REACT_APP_API_URL)
-  },[])
   return (
   
       <>
@@ -37,7 +33,6 @@ export default function App() {
             <Route path='/admin/home' element={<PrivateRouter element={<AdminHome/>} adminOnly/>}/>
             <Route path= '/admin/subjects' element={<PrivateRouter element={<ManageSubject/>} adminOnly/>}/>
             <Route path= '/admin/upload' element={<PrivateRouter element={<UploadFile/>} adminOnly/>}/>
-            <Route path= '/admin/test' element={<PrivateRouter element={<Test/>} adminOnly/>}/>
 
           </Routes>
         <Footer/>
