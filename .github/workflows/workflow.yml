@@ -30,17 +30,11 @@ jobs:
       - name: Restart backend with PM2 (CORRECT)
         run: |
           pm2 delete backend || true
-          pm2 start index.js --name backend --cwd backend
-          pm2 save
+          pkill ngrok
+          pm2 list
+          echo "=== CURRENT DIRECTORY ==="
+          pwd
 
-      - name: Restart ngrok
-        run: |
-          pkill ngrok || true
-          nohup ngrok http 5000 > ~/ngrok.log 2>&1 &
-          sleep 5
-
-      - name: Print ngrok HTTPS URL
-        run: |
-          echo "NGROK HTTPS URL:"
-          curl -s http://127.0.0.1:4040/api/tunnels \
-            | grep -o 'https://[^"]*ngrok[^"]*'
+          echo "=== PM2 STATUS ==="
+          pm2 list
+          
