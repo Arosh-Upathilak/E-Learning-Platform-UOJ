@@ -27,13 +27,23 @@ jobs:
           cd backend
           npm install
 
-      - name: Restart backend with PM2 (CORRECT)
+      - name: Restart backend with PM2 (FIXED)
         run: |
-          pm2 delete backend || true
-          pkill ngrok || true
-          pm2 list
-          pm2 start backend/index.js --name backend 
-          pm2 save
-          nohup ngrok http 5000 > ~/ngrok.log 2>&1 &
+          PM2_HOME=/home/ubuntu/.pm2
 
-          
+          pm2 delete backend || true
+          pm2 start /home/ubuntu/actions-runner/_work/E-Learning-Platform-UOJ/E-Learning-Platform-UOJ/backend/index.js \
+            --name backend \
+            --cwd /home/ubuntu/actions-runner/_work/E-Learning-Platform-UOJ/E-Learning-Platform-UOJ/backend
+          pm2 save
+
+      - name: Restart ngrok (FIXED)
+        run: |
+          pkill ngrok || true
+          nohup /usr/local/bin/ngrok http 5000 > /home/ubuntu/ngrok.log 2>&1 &
+          sleep 5
+
+      - name: Print ngrok HTTPS URL
+        run: |
+          curl -s http://127.0.0.1:4040/api/tunnels \
+            | grep -o 'https://[^"]*ngrok[^"]*'
