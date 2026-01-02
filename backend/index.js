@@ -25,7 +25,7 @@ app.use(cors({
 app.use(
   cors({
     origin: [
-      frontend_url,
+      "https://e-learning-platform-uoj.netlify.app",
       "http://localhost:3000", // for local dev
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
