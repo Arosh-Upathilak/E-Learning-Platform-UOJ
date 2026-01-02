@@ -14,12 +14,12 @@ jobs:
 
       - name: Create backend .env
         run: |
-          mkdir -p backend
-          echo "MONGODB_URL=${{ secrets.MONGODB_URL }}" > backend/.env
-          echo "PORT=5000" >> backend/.env
-          echo "EMAIL_USER=${{ secrets.EMAIL_USER }}" >> backend/.env
-          echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> backend/.env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> backend/.env
+          cd backend
+          echo "MONGODB_URL=${{ secrets.MONGODB_URL }}" > .env
+          echo "PORT=5000" >> .env
+          echo "EMAIL_USER=${{ secrets.EMAIL_USER }}" >> .env
+          echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
 
       - name: Install backend dependencies
         run: |
