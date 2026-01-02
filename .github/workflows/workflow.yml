@@ -30,11 +30,11 @@ jobs:
       - name: Restart backend with PM2 (CORRECT)
         run: |
           pm2 delete backend || true
-          pkill ngrok
+          pkill ngrok || true
           pm2 list
-          echo "=== CURRENT DIRECTORY ==="
-          pwd
+          pm2 start backend/index.js --name backend 
+          pm2 save
+          nohup ngrok http 5000 > ~/ngrok.log 2>&1 &
+          pm2 logs backend --lines 50
 
-          echo "=== PM2 STATUS ==="
-          pm2 list
           
