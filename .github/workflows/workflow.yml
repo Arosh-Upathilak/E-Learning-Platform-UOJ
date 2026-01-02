@@ -27,22 +27,19 @@ jobs:
           cd backend
           npm install
 
-      - name: Start backend with PM2
+      - name: Restart backend with PM2 (CORRECT)
         run: |
           pm2 delete backend || true
-          pm2 start backend/index.js --name backend
+          pm2 start index.js --name backend --cwd backend
           pm2 save
 
-      - name: Stop existing ngrok
+      - name: Restart ngrok
         run: |
           pkill ngrok || true
-
-      - name: Start ngrok for backend
-        run: |
-          nohup ngrok http 5000 > ngrok.log 2>&1 &
+          nohup ngrok http 5000 > ~/ngrok.log 2>&1 &
           sleep 5
 
-      - name: Get ngrok HTTPS URL
+      - name: Print ngrok HTTPS URL
         run: |
           echo "NGROK HTTPS URL:"
           curl -s http://127.0.0.1:4040/api/tunnels \
