@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: "./backend/.env" });
 import connectDB from './config/connectDB.js';
 import userRouter from './routes/userRoutes.js';
 import subjectRouter from './routes/subjectRoutes.js';
