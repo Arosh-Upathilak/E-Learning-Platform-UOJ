@@ -22,14 +22,19 @@ app.use(cors({
 }));*/
 
 //for the deployement
-app.use(cors({
-    origin: (origin, callback) => {
-        callback(null, true);
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-}));
+app.use(
+  cors({
+    origin: [
+      "https://e-learning-platform-uoj.netlify.app",
+      "http://localhost:3000", // for local dev
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
+
+// ✅ Handle preflight requests
+app.options("*", cors());
 
 app.use(cookieParser());
 app.use(express.json());
