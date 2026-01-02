@@ -4,27 +4,48 @@ on:
   push:
     branches: [main]
 
-
 jobs:
-  build:
+  deploy:
     runs-on: self-hosted
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Create backend .env
         run: |
-          touch backend/.env
-          echo "MONGODB_URL=${{ secrets.MONGODB_URL }}" >> ./backend/.env
-          echo "PORT=${{ secrets.PORT }}" >> ./backend/.env
-          echo "EMAIL_USER=${{ secrets.EMAIL_USER }}" >> ./backend/.env
-          echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> ./backend/.env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> ./backend/.env
+          mkdir -p backend
+          echo "MONGODB_URL=${{ secrets.MONGODB_URL }}" > backend/.env
+          echo "PORT=5000" >> backend/.env
+          echo "EMAIL_USER=${{ secrets.EMAIL_USER }}" >> backend/.env
+          echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> backend/.env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> backend/.env
 
-      - name: Stop existing Docker Compose (if running)
+      - name: Install backend dependencies
         run: |
-          docker compose down || true
-      
-      - name: Run Docker Compose
+          cd backend
+          npm install
+
+      - name: Start backend with PM2
         run: |
-          docker compose up -d --build
+          pm2 delete backend || true
+          pm2 start index.js --name backend
+          pm2 save
+
+      # 🔥 Stop old ngrok (if running)
+      - name: Stop existing ngrok
+        run: |
+          pkill ngrok || true
+
+      # 🔥 Start ngrok (HTTPS)
+      - name: Start ngrok for backend
+        run: |
+          nohup ngrok http 5000 > ngrok.log 2>&1 &
+          sleep 5
+
+      # 🔥 Print ngrok HTTPS URL
+      - name: Get ngrok HTTPS URL
+        run: |
+          echo "NGROK HTTPS URL:"
+          curl -s http://127.0.0.1:4040/api/tunnels \
+            | grep -o 'https://[^"]*ngrok[^"]*'

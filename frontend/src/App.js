@@ -14,6 +14,7 @@ import PrivateRouter from './components/privateRouter/PrivateRouter';
 import ManageSubject from './pages/admin/manageSubject/ManageSubject';
 import UploadFile from './pages/admin/uploadFile/UploadFile';
 import SubjectDetails from './pages/student/subjectDetails/SubjectDetails';
+import Test from './pages/admin/Test';
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
             <Route path='/admin/home' element={<PrivateRouter element={<AdminHome/>} adminOnly/>}/>
             <Route path= '/admin/subjects' element={<PrivateRouter element={<ManageSubject/>} adminOnly/>}/>
             <Route path= '/admin/upload' element={<PrivateRouter element={<UploadFile/>} adminOnly/>}/>
+            <Route path= '/admin/test' element={<PrivateRouter element={<Test/>} adminOnly/>}/>
 
           </Routes>
         <Footer/>
