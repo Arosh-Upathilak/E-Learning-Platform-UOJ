@@ -35,6 +35,8 @@ A comprehensive full-stack e-learning platform built with React.js frontend and 
 - **Cookie Parser** - HTTP cookie parsing
 
 ### DevOps & Deployment
+- **Frontend Deployment** - Netlify for static site hosting
+- **Backend Deployment** - AWS for API and server hosting
 - **Docker** - Containerization for both frontend and backend
 - **Docker Compose** - Multi-container orchestration
 - **GitHub Actions** - CI/CD workflow automation
@@ -95,6 +97,9 @@ A comprehensive full-stack e-learning platform built with React.js frontend and 
    ```
 
 ## 🚀 Running the Application
+
+### Live Demo
+🌐 **Netlify:** [https://e-learning-platform-uoj.netlify.app](https://e-learning-platform-uoj.netlify.app/)  
 
 ### Development Mode
 

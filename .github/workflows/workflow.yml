@@ -33,18 +33,15 @@ jobs:
           pm2 start backend/index.js --name backend
           pm2 save
 
-      # 🔥 Stop old ngrok (if running)
       - name: Stop existing ngrok
         run: |
           pkill ngrok || true
 
-      # 🔥 Start ngrok (HTTPS)
       - name: Start ngrok for backend
         run: |
           nohup ngrok http 5000 > ngrok.log 2>&1 &
           sleep 5
 
-      # 🔥 Print ngrok HTTPS URL
       - name: Get ngrok HTTPS URL
         run: |
           echo "NGROK HTTPS URL:"
