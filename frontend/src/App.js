@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import "./index.css";
 import { Route, Routes } from 'react-router-dom';
 import { Toaster } from 'sonner'
@@ -17,6 +17,9 @@ import SubjectDetails from './pages/student/subjectDetails/SubjectDetails';
 import Test from './pages/admin/Test';
 
 export default function App() {
+  useEffect(()=>{
+    console.log(process.env.REACT_APP_API_URL)
+  },[])
   return (
   
       <>
