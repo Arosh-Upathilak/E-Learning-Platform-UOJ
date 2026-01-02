@@ -35,6 +35,5 @@ jobs:
           pm2 start backend/index.js --name backend 
           pm2 save
           nohup ngrok http 5000 > ~/ngrok.log 2>&1 &
-          pm2 logs backend --lines 50
 
           
