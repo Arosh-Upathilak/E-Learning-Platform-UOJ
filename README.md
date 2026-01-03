@@ -258,7 +258,7 @@ This project is licensed under the ISC License - see the LICENSE file for detail
 For technical support or questions:
 - Create an issue on GitHub
 - Contact the development team
-- Email: support@uoj.ac.lk
+- Email: aroshupathilak@gmail.com
 
 ---
 
