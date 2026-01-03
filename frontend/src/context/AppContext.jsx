@@ -76,7 +76,7 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
-  const fetchData = useCallback(async () => {
+  const fetchData = async() => {
     try {
       const response = await axios.get(`${url}/users/dashboard`, {
         withCredentials: true,
@@ -93,10 +93,9 @@ export const AppContextProvider = ({ children }) => {
       console.log(message);
       setUserData(null);
     }
-  }, [url]);
+  }
 
 
-  
 
   const value = {
     theme,
