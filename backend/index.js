@@ -14,7 +14,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 /**
- * 🔥 CORS MUST BE FIRST
+ * ✅ CORS — NO app.options("*")
  */
 app.use(
   cors({
@@ -25,17 +25,9 @@ app.use(
   })
 );
 
-/**
- * 🔥 THIS HANDLES PREFLIGHT
- */
-app.options("*", cors());
-
 app.use(cookieParser());
 app.use(express.json());
 
-/**
- * 🔥 CONNECT DB AFTER CORS
- */
 connectDB();
 
 /**
