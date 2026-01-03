@@ -75,7 +75,7 @@ function CreateAccount() {
         password,
         department,
         semester,
-      });
+      }, { withCredentials: true });
       
       const message = response.data?.message || "Account created successfully";
       toast.success(message);
