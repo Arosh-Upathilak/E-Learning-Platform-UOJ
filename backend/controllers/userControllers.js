@@ -6,7 +6,7 @@ import sendMail from "../utils/nodeMailer.js";
 //user register
 const register = async (req, res) => {
   try {
-    const { username, email, password ,department, semester } = req.body;
+    const { username, email, password, department, semester } = req.body;
     if (!username || !email || !password || !department || !semester) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -22,7 +22,7 @@ const register = async (req, res) => {
       email,
       password: hashPassword,
       department,
-      semester
+      semester,
     });
     await newUser.save();
 
@@ -33,14 +33,14 @@ const register = async (req, res) => {
     );
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: true,
+      sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
     return res
       .status(201)
-      .json({ message: "User registered successfully", user: newUser,token });
+      .json({ message: "User registered successfully", user: newUser, token });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -70,12 +70,12 @@ const login = async (req, res) => {
     );
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,  
+      secure: true,
       sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    console.log("token:",token,userExists._id)
+    console.log("token:", token, userExists._id);
 
     return res
       .status(200)
@@ -183,7 +183,9 @@ const sendotp = async (req, res) => {
     userExists.otp = otp.toString();
     userExists.otpExpiration = Date.now() + 600000;
     await userExists.save();
-    return res.status(200).json({ message: "OTP sent successfully", otp, id: userExists._id });
+    return res
+      .status(200)
+      .json({ message: "OTP sent successfully", otp, id: userExists._id });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -252,7 +254,12 @@ const forgotpassword = async (req, res) => {
 //logout
 const logout = async (req, res) => {
   try {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
+
     return res.status(200).json({ message: "User logged out successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
